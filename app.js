@@ -4,6 +4,7 @@ const express = require('express')
 const router = require('./routes')
 var history = require('connect-history-api-fallback');
 var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
 
 const app = express()
 app.use(history());
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }))
 app.use(bodyParser.json())
+app.use(cookieParser('9826zxx'))
 app.use(router)
 // app.post('/api/v1/login', async (req, res) => {
 // 	console.log(req.body)
