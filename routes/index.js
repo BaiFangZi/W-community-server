@@ -135,4 +135,28 @@ router.post('/api/v1/artical/create', (req, res) => {
 	});
 })
 
+//发布文章
+
+router.post('/api/v1/problem/create', (req, res) => {
+	MongoClient.connect(url, (err, client) => {
+		if (err) {
+			console.log("数据库连接失败");
+			return false;
+		}
+		const db = client.db('wCommunity');
+		db.collection('problem').insertOne({
+			title: req.body.title,
+			content: req.body.content
+		}, (err, result) => {
+			if (err)
+				throw err
+			res.json({
+				msg: '成功',
+			})
+			client.close()
+		})
+	});
+})
+
+
 module.exports = router
