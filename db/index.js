@@ -1,6 +1,23 @@
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-// mongoose.connect('mongodb://localhost:27017/blog')
+mongoose.connect('mongodb://localhost:27017/wCommunity')
+
+const db = mongoose.connection
+db.on('error', err => {
+	console.error('连接数据库出错' + err);
+	mongoose.disconnect();
+})
+db.once('open', () => {
+	console.log('数据库连接成功')
+})
+db.on('close', () => {
+	console.log('数据库断开连接')
+})
+
+module.exports = db
+
+
+
 
 // const userSchema = new mongoose.Schema({
 //   name: String,

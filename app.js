@@ -3,9 +3,9 @@
 const express = require('express')
 const router = require('./routes')
 var history = require('connect-history-api-fallback');
-var bodyParser = require('body-parser')
-var cookieParser = require('cookie-parser')
-
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const db = require('./db/index.js')
 const app = express()
 app.use(history());
 
