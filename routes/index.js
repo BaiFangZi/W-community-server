@@ -1,4 +1,4 @@
-var express = require('express');
+const express = require('express');
 
 const router = express.Router()
 
@@ -7,6 +7,7 @@ const users = require('../model/user.js')
 const notes = require('../model/note.js')
 const problems = require('../model/problem.js')
 
+const jwt = require('jsonwebtoken')
 
 
 router.post('/api/v1/login', (req, res) => {
@@ -14,10 +15,16 @@ router.post('/api/v1/login', (req, res) => {
 			user_name: req.body.username
 		})
 		.then(result => {
-
 			if (result && result.password === req.body.password) {
+				const token = jwt.sign({
+					name: result.user_name,
+					_id: result._id
+				}, 'weizxx', {
+					expiresIn: '24h'
+				})
 				res.send({
 					code: 0,
+					data: token,
 					msg: '操作成功'
 				})
 			} else {
@@ -61,6 +68,7 @@ router.post('/api/v1/regist', (req, res) => {
 
 
 router.get('/api/v1/artical/latest', (req, res) => {
+	console.time()
 	const noteList = notes.find({}, {
 		title: 1,
 	}).limit(20)
@@ -75,6 +83,7 @@ router.get('/api/v1/artical/latest', (req, res) => {
 			problemList: result[1],
 
 		})
+		console.timeEnd()
 	}).catch(err => {
 		console.log(err.message)
 	})
@@ -237,7 +246,7 @@ router.get('/api/v1/note/search', (req, res) => {
 				content: regValue
 			}
 		]
-	},'title').then(result => {
+	}, 'title').then(result => {
 		res.send({
 			msg: '操作成功',
 			code: 0,
@@ -247,7 +256,7 @@ router.get('/api/v1/note/search', (req, res) => {
 		console.log(err)
 	})
 })
-
+//搜索问答
 router.get('/api/v1/problem/search', (req, res) => {
 	let regValue = new RegExp(req.query.value)
 	problems.find({
@@ -258,7 +267,7 @@ router.get('/api/v1/problem/search', (req, res) => {
 				content: regValue
 			}
 		]
-	},'title').then(result => {
+	}, 'title').then(result => {
 		regValue = null
 		res.send({
 			msg: '操作成功',
