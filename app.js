@@ -18,34 +18,46 @@ app.use(history());
 // 	}
 // 	next();
 // });
-app.use((req, res, next) => {
-	// console.log('243434')
-	console.log(req.url)
-	if (req.url != '/api/v1/login') {
-		// console.log(22)
-		console.log("authorization>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + req.headers.authorization)
-		const token = req.headers.authorization
-		console.log(token)
-		if (token) {
-			jwt.verify(token, 'weizxx', (err, decoded) => {
-				if (err) {
-					console.log(err)
-					res.sendStatus(401);
-				} else {
-					next()
-					// console.log(decoded)
-				}
-			})
-		} else {
-			res.sendStatus(401);
-		}
-	} else {
-		// console.log('34434343434443')
 
-		next()
-	}
 
+
+// app.use((req, res, next) => {
+// 	// console.log('243434')
+
+// 	if (req.url != '/api/v1/login') {
+// 		// console.log(22)
+// 		// console.log("authorization>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + req.headers.authorization)
+// 		const token = req.headers.authorization
+// 		// console.log(token)
+// 		if (token) {
+// 			jwt.verify(token, 'weizxx', (err, decoded) => {
+// 				if (err) {
+// 					console.log(err)
+// 					res.sendStatus(401);
+// 				} else {
+// 					next()
+// 					// console.log(decoded)
+// 				}
+// 			})
+// 		} else {
+// 			res.sendStatus(401);
+// 		}
+// 	} else {
+// 		// console.log('34434343434443')
+
+// 		next()
+// 	}
+
+// })
+
+//用户操作请求 api/v1/user/xxx
+//游客操作请求api/v1/xxx
+//拦截请求 用户操作请求去验证是否有token 
+app.all('/api/v1/user/*', (req, res, next) => {
+	console.log(11)
 })
+
+
 app.use(bodyParser.urlencoded({
 	extended: false
 }))

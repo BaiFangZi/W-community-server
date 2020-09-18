@@ -22,10 +22,20 @@ router.post('/api/v1/login', (req, res) => {
 				}, 'weizxx', {
 					expiresIn: '24h'
 				})
-				res.send({
-					code: 0,
-					data: token,
-					msg: '操作成功'
+				users.updateOne({
+					user_name: "admin"
+				}, {
+					$set: {
+						_token: token
+					}
+				}).then((result) => {
+					res.send({
+						code: 0,
+						data: token,
+						msg: '操作成功'
+					})
+				}).catch(err => {
+					console.log(err)
 				})
 			} else {
 				res.send({
